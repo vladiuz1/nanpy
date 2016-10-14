@@ -117,10 +117,13 @@ class SerialManager(object):
 def findSerialManagerByBoardID(board_id, baudrate=DEFAULT_BAUDRATE, sleep_after_connect=2, timeout=7, rtscts=False):
     from define import DefineFeature
     for p in comports():
-        c = SerialManager( device= p[0], baudrate=baudrate, sleep_after_connect=sleep_after_connect, timeout=timeout, rtscts=rtscts)
-        d = DefineFeature(connection=c)
-        if board_id == d.get('BOARD_ID'):
-            return c
+        try:
+            c = SerialManager( device= p[0], baudrate=baudrate, sleep_after_connect=sleep_after_connect, timeout=timeout, rtscts=rtscts)
+            d = DefineFeature(connection=c)
+            if board_id == d.get('BOARD_ID'):
+                return c
+        except:
+            pass
 
 serial_manager = SerialManager()
 
