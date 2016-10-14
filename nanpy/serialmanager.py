@@ -3,6 +3,7 @@ import logging
 import serial
 import sys
 import time
+from serial.tools.list_ports import comports
 
 DEFAULT_BAUDRATE = 115200
 
@@ -112,6 +113,14 @@ class SerialManager(object):
         if self._serial:
             self._serial.close()
             self._serial = None
+
+def findSerialManagerByBoardID(board_id, baudrate=DEFAULT_BAUDRATE, sleep_after_connect=2, timeout=7, rtscts=False):
+    from define import DefineFeature
+    for p in comports():
+        c = SerialManager( device= p[0], baudrate=baudrate, sleep_after_connect=sleep_after_connect, timeout=timeout, rtscts=rtscts)
+        d = DefineFeature(connection=c)
+        if board_id == d.get('BOARD_ID'):
+            return c
 
 serial_manager = SerialManager()
 
