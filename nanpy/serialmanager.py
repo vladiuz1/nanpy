@@ -115,6 +115,16 @@ class SerialManager(object):
             self._serial = None
 
 def findSerialManagerByBoardID(board_id, baudrate=DEFAULT_BAUDRATE, sleep_after_connect=2, timeout=7, rtscts=False):
+    """
+    This function finds a connection by BOARD_ID set by "cfg.h" or Makefile. Very convenient if you have multiple
+    arduino boards connected. But slow . It takes approximately the same variables as SerialManager.__init__:
+    :param board_id: the board id as defined.
+    :param baudrate:
+    :param sleep_after_connect: Modify this to make it work faster. But at your risk.
+    :param timeout:
+    :param rtscts:
+    :return: instance of SerialManager if successful otherwise None
+    """
     from define import DefineFeature
     for p in comports():
         try:
