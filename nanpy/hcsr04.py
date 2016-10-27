@@ -8,6 +8,17 @@ from nanpy import SerialManager
 from nanpy.arduinoboard import ArduinoObject
 from nanpy.arduinoboard import (arduinoobjectmethod, returns)
 
+class DHT(ArduinoObject):
+
+    DHT11 = 11
+    DHT22 = 22
+    DHT21 = 21
+    AM2301 = 21
+
+    def __init__(self, pin, _type, count=6, connection=None):
+        ArduinoObject.__init__(self, connection=connection)
+        self.id = self.call('new', pin, _type, count)
+
 class HCSR04(ArduinoObject):
 
     def __init__(self, trigPin, echoPin, connection = None):
@@ -19,13 +30,13 @@ class HCSR04(ArduinoObject):
         (i think).
         """
         ArduinoObject.__init__(self, connection = connection)
-        self.id = self.call('begin', trigPin, echoPin)
+        self.id = self.call('new', trigPin, echoPin)
 
     @returns(int)
     @arduinoobjectmethod
     def read(self):
         """
-        Returns distance in millimeters from object.
+        Returns distance from object (in millimiters).
         :return:
         """
         pass
